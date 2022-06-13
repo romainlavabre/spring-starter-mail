@@ -16,7 +16,8 @@ public interface MailSender {
      * @param message Message on HTML or TEXT, you can use <code>com.replace.replace.api.mail.TemplateBuilder</code>
      * @return TRUE is mail sent
      */
-    boolean send( List< String > to, String subject, String message );
+    boolean send( String from, List< String > to, String subject, String message );
+
 
     /**
      * @param to      List of recipient
@@ -25,7 +26,8 @@ public interface MailSender {
      * @param files   List of attachment
      * @return TRUE is mail sent
      */
-    boolean send( List< String > to, String subject, String message, List< File > files );
+    boolean send( String from, List< String > to, String subject, String message, List< File > files );
+
 
     /**
      * @param to      Recipient
@@ -33,7 +35,8 @@ public interface MailSender {
      * @param message Message on HTML or TEXT, you can use <code>com.replace.replace.api.mail.TemplateBuilder</code>
      * @return TRUE is mail sent
      */
-    boolean send( String to, String subject, String message );
+    boolean send( String from, String to, String subject, String message );
+
 
     /**
      * @param to      Recipient
@@ -42,6 +45,5 @@ public interface MailSender {
      * @param files   List of attachments
      * @return TRUE is mail sent
      */
-    boolean send( String to, String subject, String message, List< File > files );
-
+    boolean send( String from, String to, String subject, String message, List< File > files );
 }
