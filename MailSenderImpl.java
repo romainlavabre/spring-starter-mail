@@ -23,26 +23,26 @@ public class MailSenderImpl implements MailSender {
 
 
     @Override
-    public boolean send( List< String > to, String subject, String message ) {
-        return getInstance().send( to, subject, message );
+    public boolean send( String from, List< String > to, String subject, String message ) {
+        return getInstance().send( from, to, subject, message );
     }
 
 
     @Override
-    public boolean send( List< String > to, String subject, String message, List< File > files ) {
-        return getInstance().send( to, subject, message, files );
+    public boolean send( String from, List< String > to, String subject, String message, List< File > files ) {
+        return getInstance().send( from, to, subject, message, files );
     }
 
 
     @Override
-    public boolean send( String to, String subject, String message ) {
-        return getInstance().send( to, subject, message );
+    public boolean send( String from, String to, String subject, String message ) {
+        return getInstance().send( from, to, subject, message );
     }
 
 
     @Override
-    public boolean send( String to, String subject, String message, List< File > files ) {
-        return getInstance().send( to, subject, message, files );
+    public boolean send( String from, String to, String subject, String message, List< File > files ) {
+        return getInstance().send( from, to, subject, message, files );
     }
 
 

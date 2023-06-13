@@ -26,11 +26,11 @@ public class Gmail implements MailSender {
 
 
     @Override
-    public boolean send( final List< String > to, final String subject, final String message ) {
+    public boolean send( String from, List< String > to, String subject, String message ) {
         boolean res = false;
 
         for ( String t : to ) {
-            res = send( t, subject, message );
+            res = send( from, t, subject, message );
         }
 
         return res;
@@ -38,13 +38,13 @@ public class Gmail implements MailSender {
 
 
     @Override
-    public boolean send( final List< String > to, final String subject, final String message, final List< File > files ) {
+    public boolean send( String from, final List< String > to, final String subject, final String message, final List< File > files ) {
         return false;
     }
 
 
     @Override
-    public boolean send( final String to, final String subject, final String message ) {
+    public boolean send( String from, final String to, final String subject, final String message ) {
         Properties prop = new Properties();
         prop.put( "mail.smtp.host", "smtp.gmail.com" );
         prop.put( "mail.smtp.port", "587" );
@@ -80,7 +80,8 @@ public class Gmail implements MailSender {
 
 
     @Override
-    public boolean send( final String to, final String subject, final String message, final List< File > files ) {
+    public boolean send( String from, final String to, final String subject, final String message, final List< File > files ) {
         return false;
     }
+
 }
