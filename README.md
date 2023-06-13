@@ -25,8 +25,24 @@ Maven dependency :
         <version>3.11.09</version>
         <classifier>standalone</classifier>
     </dependency>
+    <dependency>
+        <groupId>jakarta.mail</groupId>
+        <artifactId>jakarta.mail-api</artifactId>
+        <version>2.1.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.angus</groupId>
+        <artifactId>jakarta.mail</artifactId>
+        <version>1.0.0</version>
+    </dependency>
 </dependencies>
 ```
+
+If you use gmail :
+
+- Enable 2FA on your account
+- Search "application password"
+- Generate password and provide it
 
 ### Versions
 

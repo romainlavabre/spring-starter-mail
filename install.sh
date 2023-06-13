@@ -21,7 +21,9 @@ done
 
 CLASSES=(
     "$1/MailSender.java"
+    "$1/MailSenderImpl.java"
     "$1/Mailgun.java"
+    "$1/Gmail.java"
 )
 
 for CLASS in "${CLASSES[@]}"; do
@@ -34,4 +36,15 @@ info "You need import this dependency
     <artifactId>unirest-java</artifactId>
     <version>3.11.09</version>
     <classifier>standalone</classifier>
-</dependency>"
+</dependency>
+<dependency>
+    <groupId>jakarta.mail</groupId>
+    <artifactId>jakarta.mail-api</artifactId>
+    <version>2.1.2</version>
+</dependency>
+<dependency>
+    <groupId>org.eclipse.angus</groupId>
+    <artifactId>jakarta.mail</artifactId>
+    <version>1.0.0</version>
+</dependency>
+"

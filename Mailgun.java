@@ -11,26 +11,26 @@ import java.util.List;
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
  */
-@Service
+@Service( "mailSenderMailgun" )
 public class Mailgun implements MailSender {
 
     protected Environment environment;
 
 
-    public Mailgun( Environment environment ) {
+    public Mailgun( final Environment environment ) {
         this.environment = environment;
     }
 
 
     @Override
-    public boolean send( String from, List< String > to, String subject, String message ) {
-        MultipartBody multipartBody = this.init( from );
+    public boolean send( final List< String > to, final String subject, final String message ) {
+        final MultipartBody multipartBody = this.init();
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addMessage( multipartBody, message );
 
-        HttpResponse< JsonNode > response = multipartBody.asJson();
+        final HttpResponse< JsonNode > response = multipartBody.asJson();
 
 
         return response.isSuccess();
@@ -38,44 +38,44 @@ public class Mailgun implements MailSender {
 
 
     @Override
-    public boolean send( String from, List< String > to, String subject, String message, List< File > files ) {
-        MultipartBody multipartBody = this.init( from );
+    public boolean send( final List< String > to, final String subject, final String message, final List< File > files ) {
+        final MultipartBody multipartBody = this.init();
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addFile( multipartBody, files )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addFile( multipartBody, files )
+                .addMessage( multipartBody, message );
 
-        HttpResponse< JsonNode > response = multipartBody.asJson();
+        final HttpResponse< JsonNode > response = multipartBody.asJson();
 
         return response.isSuccess();
     }
 
 
     @Override
-    public boolean send( String from, String to, String subject, String message ) {
-        MultipartBody multipartBody = this.init( from );
+    public boolean send( final String to, final String subject, final String message ) {
+        final MultipartBody multipartBody = this.init();
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addMessage( multipartBody, message );
 
-        HttpResponse< JsonNode > response = multipartBody.asJson();
+        final HttpResponse< JsonNode > response = multipartBody.asJson();
 
         return response.isSuccess();
     }
 
 
     @Override
-    public boolean send( String from, String to, String subject, String message, List< File > files ) {
-        MultipartBody multipartBody = this.init( from );
+    public boolean send( final String to, final String subject, final String message, final List< File > files ) {
+        final MultipartBody multipartBody = this.init();
 
         this.addRecipient( multipartBody, to )
-            .addSubject( multipartBody, subject )
-            .addFile( multipartBody, files )
-            .addMessage( multipartBody, message );
+                .addSubject( multipartBody, subject )
+                .addFile( multipartBody, files )
+                .addMessage( multipartBody, message );
 
-        HttpResponse< JsonNode > response = multipartBody.asJson();
+        final HttpResponse< JsonNode > response = multipartBody.asJson();
 
         return response.isSuccess();
     }
@@ -86,13 +86,14 @@ public class Mailgun implements MailSender {
      *
      * @return
      */
-    protected MultipartBody init( String from ) {
-        HttpRequestWithBody requestWithBody =
-                Unirest.post( "https://api.mailgun.net/v3/" + this.environment.getEnv( Variable.MAIL_DOMAIN ) + "/messages" );
+    protected MultipartBody init() {
+
+        final HttpRequestWithBody requestWithBody =
+                Unirest.post( "https://api.mailgun.net/v3/" + this.environment.getEnv( Variable.MAILGUN_DOMAIN ) + "/messages" );
 
         return requestWithBody
-                .basicAuth( "api", this.environment.getEnv( Variable.MAIL_PRIVATE_KEY ) )
-                .field( "from", from )
+                .basicAuth( "api", this.environment.getEnv( Variable.MAILGUN_PRIVATE_KEY ) )
+                .field( "from", this.environment.getEnv( Variable.MAILGUN_FROM ) )
                 .field( "o:require-tls", "true" )
                 .field( "o:skip-verification", "false" )
                 .field( "encoding", "utf-8" );
@@ -106,15 +107,8 @@ public class Mailgun implements MailSender {
      * @param recipients
      * @return
      */
-    protected Mailgun addRecipient( MultipartBody multipartBody, List< String > recipients ) {
-        String redirectMail = environment.getEnv( Variable.REDIRECT_MAIL );
-
-        if ( redirectMail != null && !redirectMail.isBlank() && !redirectMail.toUpperCase().equals( "NONE" ) ) {
-            multipartBody.field( "to", redirectMail );
-            return this;
-        }
-
-        for ( String recipient : recipients ) {
+    protected Mailgun addRecipient( final MultipartBody multipartBody, final List< String > recipients ) {
+        for ( final String recipient : recipients ) {
             multipartBody.field( "to", recipient );
         }
 
@@ -129,13 +123,7 @@ public class Mailgun implements MailSender {
      * @param recipient
      * @return
      */
-    protected Mailgun addRecipient( MultipartBody multipartBody, String recipient ) {
-        String redirectMail = environment.getEnv( Variable.REDIRECT_MAIL );
-
-        if ( redirectMail != null && !redirectMail.isBlank() && !redirectMail.toUpperCase().equals( "NONE" ) ) {
-            multipartBody.field( "to", redirectMail );
-            return this;
-        }
+    protected Mailgun addRecipient( final MultipartBody multipartBody, final String recipient ) {
 
         multipartBody.field( "to", recipient );
 
@@ -150,7 +138,7 @@ public class Mailgun implements MailSender {
      * @param subject
      * @return
      */
-    protected Mailgun addSubject( MultipartBody multipartBody, String subject ) {
+    protected Mailgun addSubject( final MultipartBody multipartBody, final String subject ) {
         multipartBody.field( "subject", subject );
 
         return this;
@@ -162,8 +150,8 @@ public class Mailgun implements MailSender {
      * @param message       Message on HTML or TEXT
      * @return
      */
-    protected Mailgun addMessage( MultipartBody multipartBody, String message ) {
-        if ( message.contains( "!DOCTYPE html" ) ) {
+    protected Mailgun addMessage( final MultipartBody multipartBody, final String message ) {
+        if ( message.contains( "<html>" ) ) {
             multipartBody.field( "html", message );
         } else {
             multipartBody.field( "text", message );
@@ -178,9 +166,9 @@ public class Mailgun implements MailSender {
      * @param files         List of attachment
      * @return
      */
-    protected Mailgun addFile( MultipartBody multipartBody, List< File > files ) {
+    protected Mailgun addFile( final MultipartBody multipartBody, final List< File > files ) {
 
-        for ( File file : files ) {
+        for ( final File file : files ) {
             multipartBody.field( "attachment", file );
         }
 
