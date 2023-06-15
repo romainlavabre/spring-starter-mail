@@ -67,7 +67,7 @@ public class Gmail implements MailSender {
                     InternetAddress.parse( to )
             );
             mes.setSubject( subject );
-            mes.setText( message );
+            mes.setContent( message, "text/html" );
 
             Transport.send( mes );
 
