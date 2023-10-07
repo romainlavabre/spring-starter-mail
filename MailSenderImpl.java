@@ -11,13 +11,13 @@ import java.util.List;
 @Service( "mailSender" )
 public class MailSenderImpl implements MailSender {
     protected final MailSender  mailSenderMailgun;
-    protected final MailSender  mailSenderGmail;
+    protected final MailSender  mailSenderSMTP;
     protected final Environment environment;
 
 
-    public MailSenderImpl( MailSender mailSenderMailgun, MailSender mailSenderGmail, Environment environment ) {
+    public MailSenderImpl( MailSender mailSenderMailgun, MailSender mailSenderSMTP, Environment environment ) {
         this.mailSenderMailgun = mailSenderMailgun;
-        this.mailSenderGmail   = mailSenderGmail;
+        this.mailSenderSMTP    = mailSenderSMTP;
         this.environment       = environment;
     }
 
@@ -47,9 +47,9 @@ public class MailSenderImpl implements MailSender {
 
 
     protected MailSender getInstance() {
-        if ( environment.getEnv( Variable.GMAIL_USERNAME ) != null
-                && !environment.getEnv( Variable.GMAIL_USERNAME ).isBlank() ) {
-            return mailSenderGmail;
+        if ( environment.getEnv( Variable.SMTP_USERNAME ) != null
+                && !environment.getEnv( Variable.SMTP_USERNAME ).isBlank() ) {
+            return mailSenderSMTP;
         }
 
         if ( environment.getEnv( Variable.MAILGUN_DOMAIN ) != null
