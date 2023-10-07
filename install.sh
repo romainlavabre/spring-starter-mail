@@ -23,7 +23,7 @@ CLASSES=(
     "$1/MailSender.java"
     "$1/MailSenderImpl.java"
     "$1/Mailgun.java"
-    "$1/Gmail.java"
+    "$1/SMTP.java"
 )
 
 for CLASS in "${CLASSES[@]}"; do
