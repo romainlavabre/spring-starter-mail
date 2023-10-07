@@ -54,7 +54,7 @@ public class SMTP implements MailSender {
         Session session = Session.getInstance( prop,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication( environment.getEnv( Variable.SMTP_USERNAME ), environment.getEnv( Variable.GMAIL_PASSWORD ) );
+                        return new PasswordAuthentication( environment.getEnv( Variable.SMTP_USERNAME ), environment.getEnv( Variable.SMTP_PASSWORD ) );
                     }
                 } );
 
